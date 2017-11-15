@@ -116,13 +116,9 @@
 
 - (void)updateDoneButton
 {
-    if (self.selectedAssets.count >= self.maximumImagesCount) {
-      [self finishPickingAssets]
-    } else {
-      UINavigationController *nav = (UINavigationController *)self.childViewControllers[0];
-      for (UIViewController *viewController in nav.viewControllers)
-        viewController.navigationItem.rightBarButtonItem.enabled = (self.selectedAssets.count > 0);
-    }
+    UINavigationController *nav = (UINavigationController *)self.childViewControllers[0];
+    for (UIViewController *viewController in nav.viewControllers)
+      viewController.navigationItem.rightBarButtonItem.enabled = (self.selectedAssets.count > 0);
 }
 
 - (void)updateToolbar
