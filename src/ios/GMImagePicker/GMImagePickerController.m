@@ -21,19 +21,19 @@
     if (self = [super init])
     {
         _allow_video = allow_v;
-        
+
         _selectedAssets = [[NSMutableArray alloc] init];
         _selectedFetches = [[NSMutableArray alloc] init];
-        
+
         //Default values:
         _displaySelectionInfoToolbar = YES;
         _displayAlbumsNumberOfAssets = YES;
-        
+
         //Grid configuration:
         _colsInPortrait = 3;
         _colsInLandscape = 5;
         _minimumInteritemSpacing = 2.0;
-        
+
         //Sample of how to select the collections you want to display:
         _customSmartCollections = @[@(PHAssetCollectionSubtypeSmartAlbumFavorites),
                                     @(PHAssetCollectionSubtypeSmartAlbumRecentlyAdded),
@@ -44,9 +44,9 @@
                                     @(PHAssetCollectionSubtypeSmartAlbumPanoramas)];
         //If you don't want to show smart collections, just put _customSmartCollections to nil;
         //_customSmartCollections=nil;
-        
+
         self.preferredContentSize = kPopoverContentSize;
-        
+
         [self setupNavigationController];
     }
     return self;
@@ -54,7 +54,7 @@
 
 - (void)dealloc
 {
-    
+
 }
 
 
@@ -77,7 +77,7 @@
     GMAlbumsViewController *albumsViewController = [[GMAlbumsViewController alloc] init:_allow_video];
     _navigationController = [[UINavigationController alloc] initWithRootViewController:albumsViewController];
     _navigationController.delegate = self;
-    
+
     [_navigationController willMoveToParentViewController:self];
     [_navigationController.view setFrame:self.view.frame];
     [self.view addSubview:_navigationController.view];
@@ -91,7 +91,7 @@
 {
     [self.selectedAssets insertObject:asset atIndex:self.selectedAssets.count];
     [self updateDoneButton];
-    
+
     if(self.displaySelectionInfoToolbar)
         [self updateToolbar];
 }
@@ -101,7 +101,7 @@
     [self.selectedAssets removeObjectAtIndex:[self.selectedAssets indexOfObject:asset]];
     if(self.selectedAssets.count == 0)
         [self updateDoneButton];
-    
+
     if(self.displaySelectionInfoToolbar)
         [self updateToolbar];
 }
@@ -116,9 +116,13 @@
 
 - (void)updateDoneButton
 {
-    UINavigationController *nav = (UINavigationController *)self.childViewControllers[0];
-    for (UIViewController *viewController in nav.viewControllers)
+    if (self.selectedAssets.count >= self.maximumImagesCount) {
+      [self finishPickingAssets]
+    } else {
+      UINavigationController *nav = (UINavigationController *)self.childViewControllers[0];
+      for (UIViewController *viewController in nav.viewControllers)
         viewController.navigationItem.rightBarButtonItem.enabled = (self.selectedAssets.count > 0);
+    }
 }
 
 - (void)updateToolbar
@@ -137,7 +141,7 @@
 {
     if ([self.delegate respondsToSelector:@selector(assetsPickerControllerDidCancel:)])
         [self.delegate assetsPickerControllerDidCancel:self];
-    
+
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -147,7 +151,7 @@
     if ([self.delegate respondsToSelector:@selector(assetsPickerController:didFinishPickingAssets:)])
         //[self.delegate assetsPickerController:self didFinishPickingAssets:self.selectedAssets];
         [self.delegate assetsPickerController:self didFinishPickingAssets:self.selectedFetches];
-    
+
     //[self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -163,15 +167,20 @@
 
 - (NSString *)toolbarTitle
 {
-    if (self.selectedAssets.count == 0)
+    if (self.selectedAssets.count == 0) {
+      if (self.allow_video) {
         return nil;
-    
+      } else {
+        return NSLocalizedStringFromTable(@"picker.selection.zero-photo", @"GMImagePicker", @"Please Select Photo" );
+      }
+    }
+
     NSPredicate *photoPredicate = [self predicateOfAssetType:PHAssetMediaTypeImage];
     NSPredicate *videoPredicate = [self predicateOfAssetType:PHAssetMediaTypeVideo];
-    
+
     NSInteger nImages = [self.selectedAssets filteredArrayUsingPredicate:photoPredicate].count;
     NSInteger nVideos = [self.selectedAssets filteredArrayUsingPredicate:videoPredicate].count;
-    
+
     if (nImages>0 && nVideos>0)
     {
         return [NSString stringWithFormat:NSLocalizedStringFromTable(@"picker.selection.multiple-items", @"GMImagePicker", @"%@ Items Selected" ), @(nImages+nVideos)];
@@ -208,13 +217,13 @@
                                      style:UIBarButtonItemStylePlain
                                     target:nil
                                     action:nil];
-    
+
     NSDictionary *attributes = @{NSForegroundColorAttributeName : [UIColor blackColor]};
-    
+
     [title setTitleTextAttributes:attributes forState:UIControlStateNormal];
     [title setTitleTextAttributes:attributes forState:UIControlStateDisabled];
     [title setEnabled:NO];
-    
+
     return title;
 }
 
@@ -227,7 +236,7 @@
 {
     UIBarButtonItem *title = [self titleButtonItem];
     UIBarButtonItem *space = [self spaceButtonItem];
-    
+
     return @[space, title, space];
 }
 
