@@ -1,7 +1,7 @@
 cordova-plugin-image-picker
 ===================
 
-Cordova Plugin For Multiple Image Selection - implemented for iOS and Android 4.0 and above.
+Cordova Plugin For Multiple Images Selection - implemented for iOS and Android 4.0 and above.
 
 ## ! NOTICE
 This project forked from [https://github.com/Telerik-Verified-Plugins/ImagePicker](https://github.com/Telerik-Verified-Plugins/ImagePicker)
@@ -9,17 +9,17 @@ This project forked from [https://github.com/Telerik-Verified-Plugins/ImagePicke
 ## Installing the plugin
 
 The plugin conforms to the Cordova plugin specification, it can be installed
-using the Cordova / Phonegap command line interface.
+using the Ionic / Cordova command line interface.
 
-    # without desc
-    phonegap plugin add https://github.com/Telerik-Verified-Plugins/ImagePicker.git
-    cordova plugin add https://github.com/Telerik-Verified-Plugins/ImagePicker.git
+without desc
+```shell
+ionic cordova plugin add https://github.com/hiyali/cordova-plugin-image-picker.git
+```
 
-    # with desc
-    phonegap plugin add https://github.com/Telerik-Verified-Plugins/ImagePicker.git --variable PHOTO_LIBRARY_USAGE_DESCRIPTION="your usage message"
-
-    cordova plugin add https://github.com/Telerik-Verified-Plugins/ImagePicker.git --variable PHOTO_LIBRARY_USAGE_DESCRIPTION="your usage message"
-
+with desc
+```shell
+ionic cordova plugin add https://github.com/hiyali/cordova-plugin-image-picker.git --variable PHOTO_LIBRARY_USAGE_DESCRIPTION="your usage message"
+```
 
 ## Using the plugin
 
@@ -56,28 +56,30 @@ window.imagePicker.getPictures(
 
 ### Options
 
-    options = {
-        // Android only. Max images to be selected, defaults to 15. If this is set to 1, upon
-        // selection of a single image, the plugin will return it.
-        maximumImagesCount: int,
+```javascript
+options = {
+    // Max images to be selected, defaults to 15. If this is set to 1, upon
+    // selection of a single image, the plugin will return it (Android only).
+    maximumImagesCount: int,
 
-        // max width and height to allow the images to be.  Will keep aspect
-        // ratio no matter what.  So if both are 800, the returned image
-        // will be at most 800 pixels wide and 800 pixels tall.  If the width is
-        // 800 and height 0 the image will be 800 pixels wide if the source
-        // is at least that wide.
-        width: int,
-        height: int,
+    // max width and height to allow the images to be.  Will keep aspect
+    // ratio no matter what.  So if both are 800, the returned image
+    // will be at most 800 pixels wide and 800 pixels tall.  If the width is
+    // 800 and height 0 the image will be 800 pixels wide if the source
+    // is at least that wide.
+    width: int,
+    height: int,
 
-        // quality of resized image, defaults to 100
-        quality: int (0-100),
+    // quality of resized image, defaults to 100
+    quality: int (0-100),
 
-        // output type, defaults to FILE_URIs.
-        // available options are
-        // window.imagePicker.OutputType.FILE_URI (0) or
-        // window.imagePicker.OutputType.BASE64_STRING (1)
-        outputType: int
-    };
+    // output type, defaults to FILE_URIs.
+    // available options are
+    // window.imagePicker.OutputType.FILE_URI (0) or
+    // window.imagePicker.OutputType.BASE64_STRING (1)
+    outputType: int
+};
+```
 
 ### Note for Android Use
 
@@ -136,23 +138,4 @@ Code(FakeR) was also taken from the phonegap BarCodeScanner plugin.  This code u
 https://github.com/wildabeast/BarcodeScanner
 
 ## License
-
-The MIT License
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+MIT
